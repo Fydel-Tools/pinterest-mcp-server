@@ -9,11 +9,16 @@ export const PINTEREST_API_BASE = (process.env.PINTEREST_API_BASE ?? "https://ap
   .replace(/\/+$/, "");
 
 /**
- * OAuth token endpoint. Pinterest issues tokens from the production API host
- * even when calls go to the sandbox, so this is fixed and not tied to
- * PINTEREST_API_BASE.
+ * OAuth token endpoint. Follows PINTEREST_API_BASE: Pinterest issues Sandbox
+ * tokens from https://api-sandbox.pinterest.com/v5/oauth/token and production
+ * tokens from https://api.pinterest.com/v5/oauth/token, and a token only works
+ * on the host that issued it. PINTEREST_TOKEN_URL overrides this if set.
  */
-export const PINTEREST_TOKEN_URL = "https://api.pinterest.com/v5/oauth/token";
+export const PINTEREST_TOKEN_URL = (process.env.PINTEREST_TOKEN_URL ?? `${PINTEREST_API_BASE}/oauth/token`)
+  .trim();
+
+/** True when calls go to the Pinterest API Sandbox (Trial access pin writes). */
+export const PINTEREST_SANDBOX = /api-sandbox\.pinterest\.com/.test(PINTEREST_API_BASE);
 
 /** Pinterest user-facing authorize page. */
 export const PINTEREST_AUTH_URL = "https://www.pinterest.com/oauth/";

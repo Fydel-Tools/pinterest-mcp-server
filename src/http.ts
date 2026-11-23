@@ -4,6 +4,7 @@
 // hand off, close. This server is the OAuth Resource Server only.
 import { createServer, type IncomingMessage, type ServerResponse } from "node:http";
 import { StreamableHTTPServerTransport } from "@modelcontextprotocol/sdk/server/streamableHttp.js";
+import { PINTEREST_SANDBOX } from "./constants.js";
 import { buildServer, requirePinterestConfig, SERVER_NAME, SERVER_VERSION } from "./server.js";
 import { connectEnabled, handleConnect, handleCallback } from "./connect.js";
 import { getValidTokens } from "./auth/token-manager.js";
@@ -94,7 +95,7 @@ async function handleMcp(req: IncomingMessage, res: ServerResponse): Promise<voi
 const httpServer = createServer((req, res) => {
   const url = req.url ?? "/";
   if (req.method === "GET" && (url === "/healthz" || url === "/")) {
-    return send(res, 200, { ok: true, service: SERVER_NAME, version: SERVER_VERSION, oauth: oauthEnabled });
+    return send(res, 200, { ok: true, service: SERVER_NAME, version: SERVER_VERSION, oauth: oauthEnabled, sandbox: PINTEREST_SANDBOX });
   }
   if (req.method === "GET" && url === "/.well-known/oauth-protected-resource") {
     return send(res, 200, protectedResourceMetadata());
@@ -117,7 +118,7 @@ const httpServer = createServer((req, res) => {
 });
 
 httpServer.listen(PORT, () => {
-  console.error(`[pinterest-mcp] HTTP server listening on :${PORT} (v${SERVER_VERSION}, oauth=${oauthEnabled}, connect=${connectEnabled})`);
+  console.error(`[pinterest-mcp] HTTP server listening on :${PORT} (v${SERVER_VERSION}, oauth=${oauthEnabled}, connect=${connectEnabled}, sandbox=${PINTEREST_SANDBOX})`);
   // Startup token check: warn only. The server must stay up so /pinterest/connect
   // can create tokens when none exist yet.
   getValidTokens()

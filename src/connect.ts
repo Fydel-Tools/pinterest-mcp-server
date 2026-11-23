@@ -11,7 +11,7 @@ import crypto from "node:crypto";
 import type { IncomingMessage, ServerResponse } from "node:http";
 import { buildAuthorizeUrl, exchangeCode } from "./auth/pinterest-oauth.js";
 import { writeTokens } from "./auth/token-manager.js";
-import { PINTEREST_API_BASE } from "./constants.js";
+import { PINTEREST_API_BASE, PINTEREST_SANDBOX } from "./constants.js";
 
 const CONNECT_PASSWORD = process.env.PINTEREST_CONNECT_PASSWORD ?? "";
 const REDIRECT_URI = (process.env.PINTEREST_REDIRECT_URI ?? "").trim();
@@ -170,6 +170,7 @@ export async function handleCallback(req: IncomingMessage, res: ServerResponse):
       "Pinterest connected",
       `<h2>Pinterest connected</h2>` +
         `<p>Account: <strong>${escapeHtml(username ?? "(username unavailable)")}</strong></p>` +
+        `<p>Environment: <strong>${PINTEREST_SANDBOX ? "Pinterest API Sandbox" : "Production"}</strong></p>` +
         `<p>Tokens were saved on the server. You can close this window.</p>`
     );
   } catch (err) {

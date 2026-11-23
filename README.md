@@ -156,7 +156,8 @@ Every refreshed token set is written back atomically (temp file, fsync, rename),
 | `PINTEREST_APP_ID` | yes | `1517658` |
 | `PINTEREST_APP_SECRET` | yes | Pinterest app secret |
 | `PINTEREST_TOKEN_PATH` | yes on Railway | `/data/tokens.json` (default locally: `~/pinterest_mcp/auth/tokens.json`) |
-| `PINTEREST_API_BASE` | no | Default `https://api.pinterest.com/v5`. Never switched to sandbox automatically |
+| `PINTEREST_API_BASE` | no | Default `https://api.pinterest.com/v5`. Set `https://api-sandbox.pinterest.com/v5` while the app has Trial access (Trial apps can only create Pins in Sandbox). The OAuth token URL follows this host. Use a separate `PINTEREST_TOKEN_PATH` per environment and re-run `/pinterest/connect` after switching |
+| `PINTEREST_TOKEN_URL` | no | Override for the OAuth token endpoint. Default: `${PINTEREST_API_BASE}/oauth/token` |
 | `PINTEREST_REDIRECT_URI` | yes for connect | `https://pinterest.meminent.ai/pinterest/callback` |
 | `PINTEREST_CONNECT_PASSWORD` | yes for connect | Long random string. Without it (or the redirect URI) the connect routes return 503 |
 | `AUTHKIT_DOMAIN` | yes | Shared AuthKit domain used by brain-v2, faire, amazon-sp |
