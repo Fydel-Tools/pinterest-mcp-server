@@ -68,7 +68,7 @@ async function refreshAccessToken(tokens: TokenSet): Promise<TokenSet> {
       continuous_refresh: "true",
     });
   } catch (err) {
-    const msg = err instanceof Error ? err.message : String(err);
+    const msg = (err instanceof Error ? err.message : String(err)).replace(/\.+$/, "");
     const status = (err as { status?: number }).status;
     throw new Error(`Token refresh failed${status ? ` (${status})` : ""}: ${msg}. ${REAUTH_HINT}`);
   }
