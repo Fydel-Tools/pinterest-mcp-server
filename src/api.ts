@@ -21,7 +21,7 @@ function formatPinterestError(status: number, endpoint: string, body: unknown): 
         typeof body === "object" && body !== null && "message" in body
           ? ` Missing scope: ${(body as { message: string }).message}`
           : " Re-authorize with the correct scopes.";
-      return `Forbidden — insufficient permissions.${scopeHint} (${endpoint})`;
+      return `Forbidden: insufficient permissions.${scopeHint} (${endpoint})`;
     }
     case 404:
       return `Resource not found: ${endpoint}`;

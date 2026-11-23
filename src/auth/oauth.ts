@@ -83,6 +83,6 @@ httpServer.listen(PORT, async () => {
     const { default: open } = await import("open");
     await open(authUrl.toString());
   } catch {
-    console.log("   (Could not open browser automatically — please copy the URL above)");
+    console.log("   (Could not open browser automatically; please copy the URL above)");
   }
 });
