@@ -1,6 +1,5 @@
 import { getValidTokens } from "./auth/token-manager.js";
-
-const PINTEREST_API_BASE = "https://api.pinterest.com/v5";
+import { PINTEREST_API_BASE } from "./constants.js";
 
 // Build a query string from an object, omitting undefined/null values
 function buildQueryString(params: Record<string, unknown>): string {
@@ -16,7 +15,7 @@ function formatPinterestError(status: number, endpoint: string, body: unknown): 
 
   switch (status) {
     case 401:
-      return `Access token expired or invalid. Run 'npm run auth' to re-authorize. (${endpoint})`;
+      return `Access token expired or invalid. Re-authorize at /pinterest/connect (hosted) or run 'npm run auth' (local). (${endpoint})`;
     case 403: {
       const scopeHint =
         typeof body === "object" && body !== null && "message" in body
